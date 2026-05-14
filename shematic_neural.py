@@ -51,8 +51,17 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-HOST = "127.0.0.1"
-PORT = 8080
+def _env_int(name, default):
+    v = os.getenv(name)
+    if not v:
+        return default
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return default
+
+HOST = os.getenv("HOST", "0.0.0.0")
+PORT = _env_int("PORT", 8080)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.join(BASE_DIR, "models")
